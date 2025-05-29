@@ -40,8 +40,7 @@ function createCard(cardData) {
 
 // Функция для создания пагинации
 function createPagination() {
-	const pagination = document.createElement('div')
-	pagination.className = 'slider__pagination'
+	const pagination = document.querySelector('.slider__pagination')
 
 	for (let i = 0; i < slidesCount; i++) {
 		const dot = document.createElement('button')
@@ -62,6 +61,11 @@ function goToSlide(index) {
 	currentSlide = index
 	const offset = -currentSlide * cardWidth
 	slider.style.transform = `translateX(${offset}px)`
+
+	const sliderDots = document.querySelectorAll('.slider__dot')
+	const activeDot = document.querySelector('.slider__dot.active')
+	activeDot.classList.remove('active')
+	sliderDots[index].classList.add('active')
 }
 
 // Функция для создания  слайдера
@@ -73,13 +77,15 @@ async function initSlider() {
 	cardsData = await loadCardsData()
 	slidesCount = cardsData.length // 4
 
-	// создаем карточки на основке полученного cardData 
+	createPagination()
+
+	// создаем карточки на основке полученного cardData
 	cardsData.forEach((cardData) => {
 		const card = createCard(cardData)
 		slider.appendChild(card)
 	})
 
-	// навигаыйия 
+	// навигаыйия
 	const prevBtn = document.querySelector('.slider__button--left')
 	prevBtn.addEventListener('click', () => {
 		goToSlide((currentSlide - 1 + slidesCount) % slidesCount)
@@ -94,6 +100,5 @@ async function initSlider() {
 	// 	goToSlide((currentSlide + 1) % slidesCount)
 	// }, 4000)
 }
-
 
 document.addEventListener('DOMContentLoaded', initSlider)
