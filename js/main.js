@@ -70,6 +70,10 @@ function goToSlide(index) {
 
 // Функция для создания  слайдера
 async function initSlider() {
+	const interval = setInterval(() => {
+		goToSlide((currentSlide + 1) % slidesCount)
+	}, 4000)
+
 	const slider = document.querySelector('.slider__cards')
 	if (!slider) return
 
@@ -88,17 +92,15 @@ async function initSlider() {
 	// навигаыйия
 	const prevBtn = document.querySelector('.slider__button--left')
 	prevBtn.addEventListener('click', () => {
+		clearInterval(interval)
 		goToSlide((currentSlide - 1 + slidesCount) % slidesCount)
 	})
 
 	const nextBtn = document.querySelector('.slider__button--right')
 	nextBtn.addEventListener('click', () => {
+		clearInterval(interval)
 		goToSlide((currentSlide + 1) % slidesCount)
 	})
-
-	// setInterval(() => {
-	// 	goToSlide((currentSlide + 1) % slidesCount)
-	// }, 4000)
 }
 
 document.addEventListener('DOMContentLoaded', initSlider)
